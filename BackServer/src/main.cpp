@@ -114,7 +114,7 @@ int main()
     },
     {Post});
 
-    LOG_INFO << "Server running on 127.0.0.1:8888";
+    LOG_INFO << "Server running on 45.147.179.102:8888";
     //    app().registerPostHandlingAdvice(
     //            [](const drogon::HttpRequestPtr &req, const drogon::HttpResponsePtr &resp) {
     //                //LOG_DEBUG << "postHandling1";
@@ -123,7 +123,7 @@ int main()
     app()
             .setClientMaxBodySize(20 * 2000 * 2000)
             .setUploadPath("./uploads")
-            .addListener("45.147.179.102", 80)
+            .addListener("45.147.179.102", 8888)
             .registerPostHandlingAdvice(
                 [](const drogon::HttpRequestPtr &req, const drogon::HttpResponsePtr &resp) {
         //LOG_DEBUG << "postHandling1";
