@@ -123,7 +123,7 @@ int main()
     app()
             .setClientMaxBodySize(20 * 2000 * 2000)
             .setUploadPath("./uploads")
-            .addListener("127.0.0.1", 8888)
+            .addListener("45.147.179.102", 80)
             .registerPostHandlingAdvice(
                 [](const drogon::HttpRequestPtr &req, const drogon::HttpResponsePtr &resp) {
         //LOG_DEBUG << "postHandling1";
