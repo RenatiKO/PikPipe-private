@@ -149,6 +149,8 @@ void DxfParser::set_x(PipeNode *node)
 {
     if (node == nullptr) return;
     for (auto &in : node->in) {
+        if (in->in.empty()) continue;
+
         double distance = sqrt(CGAL::squared_distance(node->point, in->point));
         double z_offset = distance * 0.03;
 

@@ -4,6 +4,7 @@
 //#include <dxflib/dl_global.h>
 #include "PipeAlgo/PipeAlgo.h"
 #include "dxfrw/libdxfrw.h"
+//#include "./ui/ui_mainwindow.h"
 #include <iostream>
 #include <QFileDialog>
 
@@ -113,8 +114,8 @@ void MainWindow::redrawGraph() {
 
 void MainWindow::onDxfViewerClicked(QPointF &p) {
     if (ui->actionSortirTool->isChecked()) {
-        auto near_seg = dxf_p_->addVertexToGraph({p.x(), p.y(), 0});
-        dxf_p_->addMission({p.x(), p.y(), 0}, SanType::TOILET);
+        auto near_seg = dxf_p_->addVertexToGraph({p.x(), p.y(), 200});
+        dxf_p_->addMission({p.x(), p.y(), 200}, SanType::TOILET);
         redrawGraph();
         ui->actionSortirTool->setChecked(false);
 //        dxf_v_->addLine(near_seg.point(0).x(), near_seg.point(0).y(), near_seg.point(1).x(), near_seg.point(1).y(), 50, /*rnb_colors[col_cnt++]*/Qt::blue);
@@ -124,8 +125,8 @@ void MainWindow::onDxfViewerClicked(QPointF &p) {
     }
 
     if (ui->actionRakovinaTool->isChecked()) {
-        auto near_seg = dxf_p_->addVertexToGraph({p.x(), p.y(), 0});
-        dxf_p_->addMission({p.x(), p.y(), 0}, SanType::RAKOVINA);
+        auto near_seg = dxf_p_->addVertexToGraph({p.x(), p.y(), 500});
+        dxf_p_->addMission({p.x(), p.y(), 500}, SanType::RAKOVINA);
         redrawGraph();
         ui->actionRakovinaTool->setChecked(false);
 //        dxf_v_->addLine(near_seg.point(0).x(), near_seg.point(0).y(), near_seg.point(1).x(), near_seg.point(1).y(), 50, /*rnb_colors[col_cnt++]*/Qt::blue);
