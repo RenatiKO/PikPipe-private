@@ -76,10 +76,10 @@ include_directories( ${OpenCV_INCLUDE_DIRS} )
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 include_directories(${INC_DIRS})
 
-link_directories(libs/)
-link_directories(../libdxfrw/build)
+#link_directories(libs/)
+#link_directories(../libdxfrw/build)
 
-add_subdirectory(BackServer)
+#add_subdirectory(BackServer)
 
 set(PROJECT_SOURCES
         ./src/main.cpp
@@ -127,6 +127,8 @@ else()
     endif()
 endif()
 add_subdirectory (./src/PipeAlgo)
+add_subdirectory(./libdxfrw)
+add_subdirectory(./BackServer)
 target_link_libraries(Pipik
         PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
         PipeAlgo

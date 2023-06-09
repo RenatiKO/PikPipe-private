@@ -1,0 +1,43 @@
+:root {
+  --container: 280px;
+  --header: 55px;
+
+  /* colors */
+  --light-b: #2d2d35;
+  --b: #1d1c23;
+}
+
+html {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+
+  min-width: 610px;
+  min-height: 620px;
+
+  transform: translateZ(0) scale(1, 1);
+  backface-visibility: visible;
+
+  background-color: #fff;
+  overflow-x: hidden;
+}
+
+.container {
+  height: 100%;
+}
+
+.middle {
+  display: flex;
+  flex: 1 0 auto;
+  height: calc(100% - var(--header) - var(--header));
+  box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.2);;
+}

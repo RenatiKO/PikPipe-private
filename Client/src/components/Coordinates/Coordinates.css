@@ -1,0 +1,11 @@
+.coordinates {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 1px;
+}
+
+.dot {
+  font-family: 'Montserrat', sans-serif;
+  max-width: 59px;
+}

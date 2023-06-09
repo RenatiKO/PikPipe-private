@@ -1,0 +1,9 @@
+.uploader {
+  display: flex;
+  align-items: center;
+
+  height: 100vh;
+
+  /* background-color: #fff4dda6; */
+  background-size: cover;
+}

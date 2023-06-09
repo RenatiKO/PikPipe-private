@@ -142,6 +142,37 @@ void DxfParser::addToPipePath(std::vector<PipeSegment> &pipes)
          }
      }
 
+     int i = 0;
+     std::vector<int> diam_vec;
+     for (auto &pn : pipe_nodes_) {
+         if (pn.in.empty()) {
+             auto p = &pn;
+             std::ofstream fout("file" + std::to_string(i) + ".txt");
+             diam_vec.push_back(pn.diameter);
+             i++;
+             while (p != nullptr) {
+                  fout << p->point.x() << " " << p->point.y() << " " << p->point.z() << std::endl;
+                  p = p->out;
+             }
+             fout.close();
+         }
+
+     }
+
+     gnuplot_cmd_.clear();
+
+     gnuplot_cmd_ += "splot ";
+
+     for (int k = 0; k < i; ++k) {
+         gnuplot_cmd_ += "\"file";
+         gnuplot_cmd_ += std::to_string(k);
+         gnuplot_cmd_ += ".txt\" w li lw " + std::to_string(diam_vec[k]/4) + " lc " + std::to_string(diam_vec[k]/50) + ",";
+     }
+
+     std::ofstream fout("gnuplot.txt");
+
+     fout << gnuplot_cmd_;
+
 
      //    return result;
 }
@@ -182,20 +213,6 @@ PipesToFront DxfParser::getFrontNodes()
 
 std::vector<PipeNode> DxfParser::getPipeNodes()
 {
-    int i = 0;
-    for (auto &pn : pipe_nodes_) {
-        if (pn.in.empty()) {
-            auto p = &pn;
-            std::ofstream fout("file" + std::to_string(i) + ".txt");
-            i++;
-            while (p != nullptr) {
-                 fout << p->point.x() << " " << p->point.y() << " " << p->point.z() << std::endl;
-                 p = p->out;
-            }
-            fout.close();
-        }
-
-    }
     return pipe_nodes_;
 }
 
@@ -208,6 +225,10 @@ DxfParser::DxfParser()
 std::vector<PipeSegment> DxfParser::graphSearch()
 {
     weightGraph();
+
+    std::sort(mission_targets.begin(), mission_targets.end(), [](const std::pair<Point3d, SanType> &a, const std::pair<Point3d, SanType> &b) {
+        return a.second < b.second;
+    });
 
     std::vector<PipeSegment> result;
 

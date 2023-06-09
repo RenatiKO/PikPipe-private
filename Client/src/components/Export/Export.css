@@ -1,0 +1,12 @@
+.export {
+  cursor: pointer;
+  margin-top: auto;
+  color: #fff;
+  font-size: 1em;
+  font-weight: 600;
+  margin-top: 60px;
+}
+
+.export:hover {
+  text-decoration: underline;
+}

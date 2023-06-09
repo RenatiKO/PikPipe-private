@@ -24,7 +24,7 @@ void QDxfViewer::addLine(qreal x1, qreal y1, qreal x2, qreal y2, int w, QColor c
     pen.setWidth(w);
     scene_->addLine(x1, y1, x2, y2, pen);
 
-    scene_->addEllipse(x1 + (x2 - x1) / 4, y1 + (y2 - y1) / 4, 10, 10, pen);
+//    scene_->addEllipse(x1 + (x2 - x1) / 4, y1 + (y2 - y1) / 4, 10, 10, pen);
 }
 
 void QDxfViewer::addPoint(qreal x, qreal y, qreal r, QColor c)

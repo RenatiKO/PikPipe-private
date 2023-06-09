@@ -2,7 +2,7 @@
 #include <iostream>
 #include "dxf_parser.h"
 #include "dxfrw/libdxfrw.h"
-#include <PipeAlgo/PipeAlgo.h>
+#include "PipeAlgo.h"
 #include <yaml-cpp/yaml.h>
 
 using namespace drogon;
@@ -23,7 +23,7 @@ int main()
                 [](const HttpRequestPtr &req,
                 std::function<void(const HttpResponsePtr &)> &&callback) {
         MultiPartParser fileUpload;
-        std::cout << "sdbcfkfjblj" << std::endl;
+
         if (fileUpload.parse(req) != 0)
         {
             std::cout << fileUpload.getFiles()[0].getFileName() << std::endl;
@@ -94,12 +94,6 @@ int main()
             std::string out2(emitter2.c_str());
 //            std::cout << "Output without BeginSeq:\n" << out1 << '\n';
 
-//        for (auto fn : front_node) {
-//            fn.
-//        }
-//        Json::Value json;
-//        json["ok"] = 5.;
-
 
 
 
@@ -124,6 +118,7 @@ int main()
             .setClientMaxBodySize(20 * 2000 * 2000)
             .setUploadPath("./uploads")
             .addListener("45.147.179.102", 8888)
+//            .addListener("127.0.0.1", 8888)
             .registerPostHandlingAdvice(
                 [](const drogon::HttpRequestPtr &req, const drogon::HttpResponsePtr &resp) {
         //LOG_DEBUG << "postHandling1";

@@ -56,12 +56,12 @@ struct GraphNode{
 
 
 
-struct PipeToFront {
-    Point3d point;
-    int id = -1;
-    double diameter = -1;
-    Point3d next_p;
-};
+//struct PipeToFront {
+//    Point3d point;
+//    int id = -1;
+//    double diameter = -1;
+//    Point3d next_p;
+//};
 
 typedef std::vector<PipeToFront> PipesToFront;
 
@@ -91,6 +91,8 @@ class DxfParser : public DRW_Interface {
     Point3d root_point_;
 
     std::vector<PipeNode> pipe_nodes_;
+
+    std::string gnuplot_cmd_;
 
     bool isParallel(Segment3d l1, Segment3d l2);
     double linesDistance(SimpleLine l1, SimpleLine l2);

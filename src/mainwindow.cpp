@@ -2,7 +2,7 @@
 #include "../ui/ui_mainwindow.h"
 //#include <dxflib/dl_dxf.h>
 //#include <dxflib/dl_global.h>
-#include "PipeAlgo/PipeAlgo.h"
+#include "PipeAlgo/include/PipeAlgo.h"
 #include "dxfrw/libdxfrw.h"
 //#include "./ui/ui_mainwindow.h"
 #include <iostream>
@@ -107,7 +107,7 @@ void MainWindow::redrawGraph() {
     col_cnt = 0;
 
     for (auto v: dxf_p_->getEdges()) {
-        dxf_v_->addLine(v.start().x(), v.start().y(), v.end().x(), v.end().y(), 5, rnb_colors[col_cnt++]);
+        dxf_v_->addLine(v.start().x(), v.start().y(), v.end().x(), v.end().y(), 5, /*rnb_colors[col_cnt++]*/Qt::green);
         if (col_cnt >= rnb_colors.size()) col_cnt = 0;
     }
 }
@@ -140,8 +140,9 @@ void MainWindow::onDxfViewerClicked(QPointF &p) {
         dxf_p_->setRootOfGraph({p.x(), p.y(), 0});
         auto res = dxf_p_->graphSearch();
         std::vector<Fitting> fittings;
-        loadYamlFittings(fittings, "../data/avalible_fittings.yaml");
         auto graph = dxf_p_->getPipeNodes();
+        loadYamlFittings(fittings, "../data/avalible_fittings.yaml");
+
         PipeLine pipe_line(graph, fittings);
         YAML::Node result = pipe_line.makeFittingList();
         std::cout << result << std::endl;

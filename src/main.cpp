@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "iostream"
-#include "PipeAlgo/PipeAlgo.h"
+#include "PipeAlgo/include/PipeAlgo.h"
 #include "yaml-cpp/yaml.h"
 #include "yaml-cpp/parser.h"
 #include <QApplication>

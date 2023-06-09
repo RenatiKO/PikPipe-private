@@ -13,6 +13,8 @@
 #include "string"
 #include "optional"
 
+//#include "dxf_parser.h"
+
 class CompositeFitting;
 
 struct SimplePoint2d {
@@ -46,7 +48,16 @@ struct PipeNode {
     std::shared_ptr<CompositeFitting> cf = nullptr;
 };
 
+
 typedef std::vector<PipeNode> PipeGraph;
+struct PipeToFront {
+    Point3d point;
+    int id = -1;
+    double diameter = -1;
+    Point3d next_p;
+};
+
+typedef std::vector<PipeToFront> PipesToFront;
 
 //enum Element {
 //    SINK = 0,
@@ -170,150 +181,197 @@ struct YAMLPOINT {
 typedef std::vector<YAMLPOINT> YAMLPOINTS;
 
 namespace YAML {
-    bool addConnector(const Node &node, std::vector<Connector> &connectors);
+bool addConnector(const Node &node, std::vector<Connector> &connectors);
 
-    template<>
-    struct convert<Fitting> {
-        static bool decode(const Node &node, Fitting &rhs) {
-            if (!node.IsMap()) {
-                assert("is not map");
+template<>
+struct convert<Fitting> {
+    static bool decode(const Node &node, Fitting &rhs) {
+        if (!node.IsMap()) {
+            assert("is not map");
+            return false;
+        }
+        FittingType type = FittingType::UNKNOWN;
+        std::string fitting_name = node["name"].as<std::string>();
+        std::vector<Connector> connectors_vec;
+        if (node["type"].as<std::string>() == "tap") {
+            type = FittingType::TAP;
+        }
+        if (node["type"].as<std::string>() == "tee") {
+            type = FittingType::TEE;
+        }
+        if (node["type"].as<std::string>() == "crosspiece") {
+            type = FittingType::CROSSPIECE;
+        }
+        if (node["type"].as<std::string>() == "reduction") {
+            type = FittingType::REDUCTION;
+        }
+        Node connectors = node["connectors"];
+        if (!connectors.IsSequence()) {
+            assert("is not seq");
+            return false;
+        }
+        for (const Node &con: connectors) {
+            if (!addConnector(con, connectors_vec)) {
                 return false;
             }
-            FittingType type = FittingType::UNKNOWN;
-            std::string fitting_name = node["name"].as<std::string>();
-            std::vector<Connector> connectors_vec;
-            if (node["type"].as<std::string>() == "tap") {
-                type = FittingType::TAP;
-            }
-            if (node["type"].as<std::string>() == "tee") {
-                type = FittingType::TEE;
-            }
-            if (node["type"].as<std::string>() == "crosspiece") {
-                type = FittingType::CROSSPIECE;
-            }
-            if (node["type"].as<std::string>() == "reduction") {
-                type = FittingType::REDUCTION;
-            }
-            Node connectors = node["connectors"];
-            if (!connectors.IsSequence()) {
-                assert("is not seq");
-                return false;
-            }
-            for (const Node &con: connectors) {
-                if (!addConnector(con, connectors_vec)) {
-                    return false;
-                }
-            }
-                     rhs = Fitting(fitting_name, type, connectors_vec);
-            rhs.setIdConnectors();
-            return true;
         }
+        rhs = Fitting(fitting_name, type, connectors_vec);
+        rhs.setIdConnectors();
+        return true;
+    }
 
-        static Node encode(const Fitting &rhs) {
-            return Node();
-        }
-    };
+    static Node encode(const Fitting &rhs) {
+        return Node();
+    }
+};
 
-    template<>
-    struct convert<FittingYaml> {
-        static Node encode(const FittingYaml &f) {
+template<>
+struct convert<FittingYaml> {
+    static Node encode(const FittingYaml &f) {
+        YAML::Node node;
+        node["name"] = f.name_;
+        node["type"] = f.type_;
+        return node;
+    }
+};
+
+template<>
+struct convert<YAMLPOINTS> {
+
+    static Node encode(const YAMLPOINTS &points) {
+        YAML::Node nodes;
+        for (const auto &p: points) {
             YAML::Node node;
-            node["name"] = f.name_;
-            node["type"] = f.type_;
-            return node;
+            node["x"] = p.x;
+            node["y"] = p.y;
+            node["z"] = p.z;
+            node["tag"] = p.tag;
+            nodes.push_back(node);
         }
-    };
+        return nodes;
+    }
 
-    template<>
-    struct convert<YAMLPOINTS> {
-
-        static Node encode(const YAMLPOINTS &points) {
-            YAML::Node nodes;
-            for (const auto &p: points) {
-                YAML::Node node;
-                node["x"] = p.x;
-                node["y"] = p.y;
-                node["z"] = p.z;
-                node["tag"] = p.tag;
-                nodes.push_back(node);
+    static bool decode (const Node &node, YAMLPOINTS &rhs) {
+        //            YAMLPOINTS points;
+        if (!node.IsSequence()) {
+            assert("!sequence");
+        }
+        std::cout << "YAMLPOINTS size == " << node.size() << std::endl;
+        for (auto n : node) {
+            if (!n.IsMap()) {
+                assert("!map");
             }
-            return nodes;
+            YAMLPOINT p;
+            p.x = n["x"].as<double>();
+            p.y = n["y"].as<double>();
+            p.z = n["z"].as<double>();
+            p.tag = n["tag"].as<int>();
+            rhs.push_back(p);
+        }
+        return true;
+    }
+
+};
+
+template<>
+struct convert<PipeGraph> {
+    static bool decode(const Node &node, PipeGraph &rhs) {
+        rhs.reserve(node.size());
+        int order_check=0;
+        for (const auto &n: node) {
+            if (!n.IsMap()) {
+                assert("PipeNode isnt map");
+                return false;
+            }
+            PipeNode pipe_node;
+            pipe_node.id = n["id"].as<int>();
+            if(pipe_node.id!=order_check){
+                assert("ГРАФ НЕ Упорядочен оп ID!!!");
+            }
+            order_check++;
+            pipe_node.diameter = n["diameter"].as<double>();
+            pipe_node.out = nullptr;
+            const auto& point_ = n["point"];
+            if(!point_.IsMap()){
+                assert("point isnt map");
+                return false;
+            }
+            pipe_node.point = {point_["x"].as<double>(),point_["y"].as<double>(),point_["z"].as<double>()};
+            rhs.push_back(std::move(pipe_node));
+        }
+        for (const auto &n: node) {
+            auto& node_ = rhs[n["id"].as<int>()];
+            int out_id = n["out"].as<int>();
+            if (out_id == -1) {
+                node_.out = nullptr;
+            } else {
+                node_.out = &rhs[out_id];
+            }
+            auto ins = n["in"];
+            for(const auto& in : ins){
+                auto& in_ =  rhs[in.as<int>()];
+                node_.in.push_back(&in_);
+            }
         }
 
-    };
 
-    template<>
-    struct convert<PipeGraph> {
-        static bool decode(const Node &node, PipeGraph &rhs) {
-            rhs.reserve(node.size());
-            int order_check=0;
-            for (const auto &n: node) {
-                if (!n.IsMap()) {
-                    assert("PipeNode isnt map");
-                    return false;
-                }
-                PipeNode pipe_node;
-                pipe_node.id = n["id"].as<int>();
-                if(pipe_node.id!=order_check){
-                    assert("ГРАФ НЕ Упорядочен оп ID!!!");
-                }
-                order_check++;
-                pipe_node.diameter = n["diameter"].as<double>();
-                pipe_node.out = nullptr;
-                const auto& point_ = n["point"];
-                if(!point_.IsMap()){
-                    assert("point isnt map");
-                    return false;
-                }
-                pipe_node.point = {point_["x"].as<double>(),point_["y"].as<double>(),point_["z"].as<double>()};
-                rhs.push_back(std::move(pipe_node));
+
+        return true;
+    }
+
+    static Node encode(const PipeGraph &pipe_nodes) {
+        YAML::Node nodes;
+        for (const auto &pipe_node: pipe_nodes) {
+            YAML::Node node;
+            node["id"] = pipe_node.id;
+            if (pipe_node.out != nullptr) {
+                node["out"] = pipe_node.out->id;
+            } else {
+                node["out"] = -1;
             }
-            for (const auto &n: node) {
-                auto& node_ = rhs[n["id"].as<int>()];
-                int out_id = n["out"].as<int>();
-                if (out_id == -1) {
-                    node_.out = nullptr;
-                } else {
-                    node_.out = &rhs[out_id];
-                }
-                auto ins = n["in"];
-                for(const auto& in : ins){
-                    auto& in_ =  rhs[in.as<int>()];
-                    node_.in.push_back(&in_);
-                }
+            YAML::Node point;
+            point["x"] = pipe_node.point.x();
+            point["y"] = pipe_node.point.y();
+            point["z"] = pipe_node.point.z();
+            node["point"] = point;
+            YAML::Node ins;
+            for (const auto &in: pipe_node.in) {
+                ins.push_back(in->id);
             }
-
-
-
-            return true;
+            node["in"] = ins;
+            node["diameter"] = pipe_node.diameter;
+            nodes.push_back(node);
         }
+        return nodes;
+    }
+};
 
-        static Node encode(const PipeGraph &pipe_nodes) {
-            YAML::Node nodes;
-            for (const auto &pipe_node: pipe_nodes) {
-                YAML::Node node;
-                node["id"] = pipe_node.id;
-                if (pipe_node.out != nullptr) {
-                    node["out"] = pipe_node.out->id;
-                } else {
-                    node["out"] = -1;
-                }
-                YAML::Node point;
-                point["x"] = pipe_node.point.x();
-                point["y"] = pipe_node.point.y();
-                point["z"] = pipe_node.point.z();
-                node["point"] = point;
-                YAML::Node ins;
-                for (const auto &in: pipe_node.in) {
-                    ins.push_back(in->id);
-                }
-                node["in"] = ins;
-                node["diameter"] = pipe_node.diameter;
-                nodes.push_back(node);
-            }
-            return nodes;
+template<>
+struct convert<PipesToFront> {
+
+    static Node encode(const PipesToFront &points) {
+        YAML::Node nodes;
+        for (const auto &p: points) {
+            YAML::Node node;
+            YAML::Node point;
+            YAML::Node n_point;
+            point["x"] = p.point.x();
+            point["y"] = p.point.y();
+            point["z"] = p.point.z();
+            node["point"] = point;
+
+            n_point["x"] = p.next_p.x();
+            n_point["y"] = p.next_p.y();
+            n_point["z"] = p.next_p.z();
+            node["next"] = n_point;
+
+            node["diameter"] = p.diameter;
+            node["id"] = p.id;
+            nodes.push_back(node);
         }
-    };
+        return nodes;
+    }
+};
 
 }
 
@@ -334,7 +392,7 @@ public:
     std::optional<Connector> getConByQuat(Eigen::Quaternionf quat);
     void operator = (const CompositeFitting& r);
     bool addChildFitting(Fitting& child_fitting,  std::shared_ptr<Connector> connector);
-    std::vector<const std::shared_ptr<Fitting>> getAllFitings() const;
+    std::vector<std::shared_ptr<Fitting> > getAllFitings() const;
     std::vector<std::shared_ptr<Connector>> getIns () const;
     std::vector<Connector> getCompositeConnectors() const;
 

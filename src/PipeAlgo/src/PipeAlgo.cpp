@@ -508,8 +508,8 @@ std::vector<std::shared_ptr<Connector>> CompositeFitting::getIns() const {
     return res;
 }
 
-std::vector<const std::shared_ptr<Fitting>> CompositeFitting::getAllFitings() const {
-    std::vector<const std::shared_ptr<Fitting>> res;
+std::vector<std::shared_ptr<Fitting>> CompositeFitting::getAllFitings() const {
+    std::vector<std::shared_ptr<Fitting>> res;
     res.push_back(std::make_shared<Fitting>(main_fitting_));
     for (auto &[k, v]: child_fittings_) {
         for (auto &f: v) {

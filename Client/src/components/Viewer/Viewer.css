@@ -1,0 +1,55 @@
+.viewer {
+  height: 100%;
+  display: flex;
+}
+
+.viewer__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 0 auto;
+
+  height: 100%;
+  /* padding: 40px; */
+
+  box-shadow: inset 0 0 14px 6px rgba(0, 0, 0, 0.5);
+  background-color: var(--light-b);
+
+  /* grid */
+  --grid-small-size: 20px;
+  --grid-big-size: 100px;
+  --grid-white-color: rgba(255,255,255,0.2);
+  --grid-black-color: var(--light-b);
+  --grid-big-color: rgba(255,255,255,0.3);
+
+  background-image: 
+    linear-gradient(var(--grid-big-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-big-color) 1px, transparent 1px),
+    linear-gradient(var(--grid-black-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-black-color) 1px, transparent 1px),
+    linear-gradient(var(--grid-white-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-white-color) 1px, transparent 1px);
+  background-size: 
+    var(--grid-big-size) var(--grid-big-size),
+    var(--grid-big-size) var(--grid-big-size),
+    calc(var(--grid-small-size) / 4) calc(var(--grid-small-size) / 4),
+    calc(var(--grid-small-size) / 4) calc(var(--grid-small-size) / 4),
+    var(--grid-small-size) var(--grid-small-size),
+    var(--grid-small-size) var(--grid-small-size);
+  background-position: 
+    -1px -1px,
+    -1px -1px,
+    0 0,
+    0 0,
+    -1px -1px,
+    -1px -1px;
+}
+
+.drawing {
+  width: 100%;
+  height: 100%;
+}
+
+.drawing canvas {
+  background-color: rgba(0,0,0,.7);
+}
