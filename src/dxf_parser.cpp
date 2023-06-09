@@ -10,6 +10,7 @@
 #include <CGAL/create_straight_skeleton_from_polygon_with_holes_2.h>
 
 #include <fstream>
+#include <string>
 
 
 #include "header.h"
@@ -181,6 +182,20 @@ PipesToFront DxfParser::getFrontNodes()
 
 std::vector<PipeNode> DxfParser::getPipeNodes()
 {
+    int i = 0;
+    for (auto &pn : pipe_nodes_) {
+        if (pn.in.empty()) {
+            auto p = &pn;
+            std::ofstream fout("file" + std::to_string(i) + ".txt");
+            i++;
+            while (p != nullptr) {
+                 fout << p->point.x() << " " << p->point.y() << " " << p->point.z() << std::endl;
+                 p = p->out;
+            }
+            fout.close();
+        }
+
+    }
     return pipe_nodes_;
 }
 
