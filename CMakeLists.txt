@@ -76,7 +76,7 @@ set(INC_DIRS
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 include_directories(${INC_DIRS})
 
-#link_directories(libs/)
+link_directories(./build/libdxfrw)
 #link_directories(../libdxfrw/build)
 
 #add_subdirectory(BackServer)
@@ -134,7 +134,7 @@ target_link_libraries(Pipik
         PipeAlgo
 #        libyaml-cpp.a
 #        libiconv.tbd
-        libdxfrw.a
+        dxfrw
 #        ${OpenCV_LIBS}
         CGAL::CGAL
         Eigen3::Eigen)
