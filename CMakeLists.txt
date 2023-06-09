@@ -16,7 +16,7 @@ set(CGAL_DIR /usr/local/lib/cmake/CGAL)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(CGAL)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-find_package( OpenCV REQUIRED )
+#find_package( OpenCV REQUIRED )
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 find_package(  yaml-cpp REQUIRED )
 # Find OSQP library and headers.
@@ -69,7 +69,7 @@ set(INC_DIRS
 
 
 
-include_directories( ${OpenCV_INCLUDE_DIRS} )
+#include_directories( ${OpenCV_INCLUDE_DIRS} )
 #include_directories(../yaml-cpp/build)
 #link_directories(/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib)
 
@@ -135,7 +135,7 @@ target_link_libraries(Pipik
 #        libyaml-cpp.a
 #        libiconv.tbd
         libdxfrw.a
-        ${OpenCV_LIBS}
+#        ${OpenCV_LIBS}
         CGAL::CGAL
         Eigen3::Eigen)
 
