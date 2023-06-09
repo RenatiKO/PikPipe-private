@@ -11,6 +11,7 @@
 #include <CGAL/Polygon_with_holes_2.h>
 #include <CGAL/create_straight_skeleton_from_polygon_with_holes_2.h>
 #include <unordered_map>
+#include "PipeAlgo/include/PipeAlgo.h"
 
 //typedef CGAL::Exact_predicates_inexact_constructions_kernel K ;
 //typedef K::Point_2                    Point ;
@@ -19,21 +20,6 @@
 //typedef CGAL::Straight_skeleton_2<K>  Ss ;
 //typedef K::Line_2                     Line2d ;
 //typedef K::Line_3                     Line ;
-
-
-struct SimplePoint2d {
-    double x;
-    double y;
-};
-
-struct SimplePoint : public SimplePoint2d {
-    double z;
-};
-
-struct SimpleLine {
-    SimplePoint f;
-    SimplePoint s;
-};
 
 typedef CGAL::Simple_cartesian<double> Kernel;
 typedef Kernel::Point_3 Point3d;
@@ -68,13 +54,7 @@ struct GraphNode{
     GraphNode* prev;
 };
 
-struct PipeNode {
-    Point3d point;
-    int id = -1;
-    double diameter = -1;
-    std::vector<PipeNode *> in;
-    PipeNode *out = nullptr;
-};
+
 
 struct PipeToFront {
     Point3d point;

@@ -1,0 +1,14 @@
+- Node: 0
+  fittings:
+    - name: 110X110X87
+      type: TEE
+- Node: 1
+  fittings:
+    - name: 110X45
+      type: TAP
+    - name: 110X45
+      type: TAP
+- Node: 2
+  fittings:
+    - name: 110X45
+      type: TAP

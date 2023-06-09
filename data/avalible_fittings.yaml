@@ -1,4 +1,4 @@
-- name: 50x50x45
+- name: 50X50X45
   type: tee
   connectors:
     - out: 1
@@ -14,10 +14,10 @@
     - out: 0
       diameter: 50
       angles:
-       - angle: 135
+       - angle: 45
          axis: X
 
-- name: 50x50x87
+- name: 50x50X87
   type: tee
   connectors:
     - out: 1
@@ -36,7 +36,7 @@
         - angle: 93
           axis: X
 
-- name: 110x50x87
+- name: 110X50X87
   type: tee
   connectors:
     - out: 1
@@ -55,7 +55,7 @@
         - angle: 93
           axis: X
 
-- name: 110x110x87
+- name: 110X110X87
   type: tee
   connectors:
     - out: 1
@@ -74,7 +74,7 @@
         - angle: 93
           axis: X
 
-- name: 110x50x45
+- name: 110X50X45
   type: tee
   connectors:
     - out: 1
@@ -89,70 +89,70 @@
           axis: X
     - out: 0
       diameter: 50
+      angles:
+        - angle: 45
+          axis: X
+
+
+- name: 110X110X45
+  type: tee
+  connectors:
+    - out: 1
+      diameter: 110
+      angles:
+        - angle: 0
+          axis: X
+    - out: 0
+      diameter: 110
+      angles:
+        - angle: 180
+          axis: X
+    - out: 0
+      diameter: 110
+      angles:
+        - angle: 45
+          axis: X
+
+- name: 125X110X87
+  type: tee
+  connectors:
+    - out: 1
+      diameter: 125
+      angles:
+        - angle: 0
+          axis: X
+    - out: 0
+      diameter: 125
+      angles:
+        - angle: 180
+          axis: X
+    - out: 0
+      diameter: 110
+      angles:
+        - angle: 93
+          axis: X
+
+
+- name: 125X110X45
+  type: tee
+  connectors:
+    - out: 1
+      diameter: 125
+      angles:
+        - angle: 0
+          axis: X
+    - out: 0
+      diameter: 125
+      angles:
+        - angle: 180
+          axis: X
+    - out: 0
+      diameter: 110
       angles:
         - angle: 135
           axis: X
 
-
-- name: 110x110x45
-  type: tee
-  connectors:
-    - out: 1
-      diameter: 110
-      angles:
-        - angle: 0
-          axis: X
-    - out: 0
-      diameter: 110
-      angles:
-        - angle: 180
-          axis: X
-    - out: 0
-      diameter: 110
-      angles:
-        - angle: 135
-          axis: X
-
-- name: 125x110x87
-  type: tee
-  connectors:
-    - out: 1
-      diameter: 125
-      angles:
-        - angle: 0
-          axis: X
-    - out: 0
-      diameter: 125
-      angles:
-        - angle: 180
-          axis: X
-    - out: 0
-      diameter: 110
-      angles:
-        - angle: 93
-          axis: X
-
-
-- name: 125x110x45
-  type: tee
-  connectors:
-    - out: 1
-      diameter: 125
-      angles:
-        - angle: 0
-          axis: X
-    - out: 0
-      diameter: 125
-      angles:
-        - angle: 180
-          axis: X
-    - out: 0
-      diameter: 110
-      angles:
-        - angle: 135
-          axis: X
-
-- name: 110x110x50x87_left
+- name: 110X110X50X87_left
   type: crosspiece
   connectors:
     - out: 1
@@ -178,7 +178,7 @@
         - angle: 90
           axis: Y
 
-- name: 110x110x50x87_right
+- name: 110X110X50X87_right
   type: crosspiece
   connectors:
     - out: 1
@@ -204,7 +204,7 @@
         - angle: 90
           axis: Y
 
-- name: 110x110x110x87
+- name: 110X110X110X87
   type: crosspiece
   connectors:
     - out: 1
@@ -241,7 +241,7 @@
     - out: 0
       diameter: 50
       angles:
-        - angle: 135
+        - angle: 45
           axis: X
 
 - name: 110X45
@@ -255,7 +255,21 @@
     - out: 0
       diameter: 110
       angles:
-        - angle: 135
+        - angle: 45
+          axis: X
+
+- name: 110X50
+  type: reduction
+  connectors:
+    - out: 1
+      diameter: 110
+      angles:
+        - angle: 0
+          axis: X
+    - out: 0
+      diameter: 50
+      angles:
+        - angle: 180
           axis: X
 
 

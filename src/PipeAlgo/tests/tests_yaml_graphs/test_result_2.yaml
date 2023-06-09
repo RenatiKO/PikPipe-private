@@ -1,0 +1,50 @@
+- Node: 0
+  fittings:
+    - name: 110X110X87
+      type: TEE
+
+- Node: 1
+  fittings:
+    - name: 110X45
+      type: TAP
+    - name: 110X50
+      type: REDUCTION
+    - name: 110X45
+      type: TAP
+
+- Node: 2
+  fittings:
+    - name: 50X45
+      type: TAP
+    - name: 50X45
+      type: TAP
+
+- Node: 3
+  fittings:
+    - name: 50X50X45
+      type: TEE
+    - name: 50X45
+      type: TAP
+
+- Node: 4
+  fittings:
+    - name: 50X45
+      type: TAP
+    - name: 50X45
+      type: TAP
+
+- Node: 5
+  fittings:
+    - name: 50X45
+      type: TAP
+    - name: 50X45
+      type: TAP
+
+- Node: 6
+  fittings:
+    - name: 50X45
+      type: TAP
+    - name: 50X45
+      type: TAP
+
+

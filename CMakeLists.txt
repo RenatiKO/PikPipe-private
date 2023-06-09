@@ -18,7 +18,7 @@ find_package(CGAL)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 find_package( OpenCV REQUIRED )
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
-
+find_package(  yaml-cpp REQUIRED )
 # Find OSQP library and headers.
 find_package(OSQP QUIET)
 #include(CGAL_OSQP_support)
@@ -71,17 +71,18 @@ set(INC_DIRS
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 #include_directories(../yaml-cpp/build)
+#link_directories(/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib)
+
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 include_directories(${INC_DIRS})
 
 link_directories(libs/)
-#link_directories(../libdxfrw/build)
+link_directories(../libdxfrw/build)
 
 add_subdirectory(BackServer)
 
 set(PROJECT_SOURCES
         ./src/main.cpp
-        ./src/PipeAlgo/PipeAlgo.cpp
         ./src/mainwindow.cpp
         ./include/mainwindow.h
         ./ui/mainwindow.ui
@@ -101,7 +102,7 @@ set(PROJECT_SOURCES
 
 #        ./src/dxf/entities
 #        ./src/dxf/input
-         include/PipeAlgo/PipeAlgo.h)
+)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Pipik
@@ -125,10 +126,12 @@ else()
         )
     endif()
 endif()
-
+add_subdirectory (./src/PipeAlgo)
 target_link_libraries(Pipik
         PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
-        libyaml-cpp.a
+        PipeAlgo
+#        libyaml-cpp.a
+#        libiconv.tbd
         libdxfrw.a
         ${OpenCV_LIBS}
         CGAL::CGAL

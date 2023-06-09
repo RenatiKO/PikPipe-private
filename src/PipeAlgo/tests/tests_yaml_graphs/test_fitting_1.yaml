@@ -1,0 +1,28 @@
+- id: 0
+  out: -1
+  point:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  in:
+    - 1
+  diameter: 110
+
+- id: 1
+  out: 0
+  point:
+    x: 0.0
+    y: 2.0
+    z: 0.0
+  in:
+    - 2
+  diameter: 110
+-
+  id: 2
+  out: 1
+  point:
+    x: 2.0
+    y: 2.0
+    z: 0.0
+  in: ~
+  diameter: 110
